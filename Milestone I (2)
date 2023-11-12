@@ -1,0 +1,2 @@
+fimg = fits.open(url) 
+image = fimg[1].data
