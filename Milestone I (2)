@@ -60,3 +60,25 @@ def set_sun_aperture(img, img_header, rsun_factor=1, minval=0.01):
                 _img[i][j] = minval
                 
     return _img
+#def set_sun_aperture_np(img, img_header, rsun_factor=1, minval=0.01):
+    '''
+    set all pixels outside rsun_factor*r_sun, where r_sun is Sun radius in image to minval
+
+    This version uses NumPy to process all image pixels without loops
+    '''
+    # radius of the Sun in arcseconds
+    r_sun = img_header["IMSCL_MP"] * img_header['R_SUN']
+    # number of arcseconds per pixel in x and y directions
+    dx_pix2sec, dy_pix2sec = img_header['CDELT1'], img_header['CDELT2']
+    
+    _img = np.copy(img)
+    imin = _img.min()
+    nrow, ncol = np.shape(_img)
+    isum, nsum = 0, 0  
+    nrh = nrow // 2
+    nch = ncol // 2
+    Y, X = np.ogrid[:nrow, :ncol]
+    rcenter = np.sqrt(((X - nch)*dx_pix2sec)**2 + ((Y - nrh)*dy_pix2sec)**2)
+    rcut = rsun_factor * r_sun
+    _img[rcenter > rcut] = minval        
+    return _img
