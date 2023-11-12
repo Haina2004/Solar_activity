@@ -1,2 +1,33 @@
 fimg = fits.open(url) 
 image = fimg[1].data
+ny, nx = len(img1), len(img1[0]) # number of rows and columns in image 
+print('image size {:d} x {:d}'.format(nx, ny))
+nxh = nx // 2 # center pixel column
+nyh = ny // 2 # center pixel row
+# same info from the header 
+print('image size {:d} x {:d}'.format(img_header1['NAXIS1'], img_header1['NAXIS2']))
+
+def set_sun_aperture(img, img_header, rsun_factor=1, minval=0.01):
+    '''
+    set all pixels outside rsun_factor*r_sun, where r_sun is Sun radius in image to minval
+    
+    This version uses loops to iterate through all image pixels
+    '''
+    # radius of the Sun in arcseconds
+    r_sun = img_header["IMSCL_MP"] * img_header['R_SUN']
+    # number of arcseconds per pixel in x and y directions
+    dx_pix2sec, dy_pix2sec = img_header['CDELT1'], img_header['CDELT2']
+    
+    _img = np.copy(img)
+    imin = _img.min()
+    nrow, ncol = np.shape(_img)
+    isum, nsum = 0, 0  
+    nrh = nrow // 2
+    nch = ncol // 2
+    for i in range(nrow): 
+        for j in range(ncol):
+            rij = (((i-nch)*dx_pix2sec)**2 + ((j-nrh)*dy_pix2sec)**2)**0.5
+            if rij > rsun_factor * r_sun:
+                _img[i][j] = minval
+                
+    return _img
