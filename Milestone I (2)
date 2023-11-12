@@ -1,3 +1,32 @@
+#copy from notebook
+import numpy as np
+import astropy
+astropy.__version__
+url = 'http://jsoc.stanford.edu/data/aia/synoptic/2012/07/01/H0000/AIA20120701_0000_4500.fits'
+#
+from astropy.io import fits
+def read_aia_synoptic_image(url): 
+    '''
+    Read SDO image from the input URL
+    
+    Parameters:
+        url: str, URL of the image to read
+        
+    Returns:
+        image - 2D array of floats
+        img_header - FITS header of the image
+    '''
+    # open FITS file from input URL
+    fimg = fits.open(url) 
+    image = fimg[1].data # this will produce image as a numpy array
+    img_header = fimg[1].header # FITS header contains detailed info about image, save it in case we will need
+    fimg.close()
+    
+    return image, img_header
+#
+url = 'http://jsoc.stanford.edu/data/aia/synoptic/2012/07/01/H0000/AIA20120701_0000_4500.fits'
+img1, img_header1 = read_aia_synoptic_image(url)
+#
 fimg = fits.open(url) 
 image = fimg[1].data
 ny, nx = len(img1), len(img1[0]) # number of rows and columns in image 
@@ -6,7 +35,7 @@ nxh = nx // 2 # center pixel column
 nyh = ny // 2 # center pixel row
 # same info from the header 
 print('image size {:d} x {:d}'.format(img_header1['NAXIS1'], img_header1['NAXIS2']))
-
+#
 def set_sun_aperture(img, img_header, rsun_factor=1, minval=0.01):
     '''
     set all pixels outside rsun_factor*r_sun, where r_sun is Sun radius in image to minval
