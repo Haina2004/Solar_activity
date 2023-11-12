@@ -1,1 +1,13 @@
+class TimeSeries:
+    def __init__(self, start_date, end_date, cadence=2):
+        self.start_date = start_date
+        self.end_date = end_date
+        self.cadence = cadence
+   
+    def process_images(self):
+        #用AIA Synoptic data base
+        pass
 
+    def analyze_images(self):
+        #用AImage
+        pass
