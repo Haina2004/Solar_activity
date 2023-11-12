@@ -82,3 +82,48 @@ def set_sun_aperture(img, img_header, rsun_factor=1, minval=0.01):
     rcut = rsun_factor * r_sun
     _img[rcenter > rcut] = minval        
     return _img
+
+----------------------------------
+import numpy as np
+from astropy.io import fits
+
+class AImage:
+    def __init__(self, url, rsun_factor=1, minval=0.01):
+        self.image, self.img_header = self.read_aia_synoptic_image(url)
+        self.image = self.set_sun_aperture(self.image, self.img_header, rsun_factor, minval)
+
+    def read_aia_synoptic_image(self, url): 
+
+        with fits.open(url) as fimg:
+            image = fimg[1].data
+            img_header = fimg[1].header
+        return image, img_header
+
+    def set_sun_aperture(self, img, img_header, rsun_factor, minval):
+
+      r_sun = img_header["IMSCL_MP"] * img_header['R_SUN']
+      dx_pix2sec, dy_pix2sec = img_header['CDELT1'], img_header['CDELT2']
+    
+      _img = np.copy(img)
+      imin = _img.min()
+      nrow, ncol = np.shape(_img)
+      isum, nsum = 0, 0  
+      nrh = nrow // 2
+      nch = ncol // 2
+      Y, X = np.ogrid[:nrow, :ncol]
+      rcenter = np.sqrt(((X - nch)*dx_pix2sec)**2 + ((Y - nrh)*dy_pix2sec)**2)
+      rcut = rsun_factor * r_sun
+      _img[rcenter > rcut] = minval        
+      return _img
+
+    def compute_median(self):
+        return np.median(self.image)
+
+    def compute_percentile(self, percentile):
+        return np.percentile(self.image, percentile)
+
+# Example Usage
+url = 'http://jsoc.stanford.edu/data/aia/synoptic/2012/07/01/H0000/AIA20120701_0000_4500.fits'
+aimage = AImage(url, rsun_factor=1.5)
+print(f"Median: {aimage.compute_median()}")
+print(f"90th Percentile: {aimage.compute_percentile(90)}")
