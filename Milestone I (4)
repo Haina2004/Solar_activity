@@ -11,3 +11,52 @@ class TimeSeries:
     def analyze_images(self):
         #用AImage
         pass
+
+
+——————————————————————————————
+class AIATimeSeries:
+    def __init__(self, start_date, end_date, time_cadence, wavelength, rsun_factor=1, minval=0.01):
+        '''
+        Initialize the AIATimeSeriesAnalyzer object.
+
+        Parameters:
+            start_date: str, starting date for the analysis in YYYY-MM-DD format.
+            end_date: str, ending date for the analysis in YYYY-MM-DD format.
+            time_cadence: int, number of days between each image.
+            wavelength: str, wavelength filter for the images.
+            rsun_factor: float, factor to multiply with Sun's radius for image cropping.
+            minval: float, value to set for pixels outside the cropped area.
+        '''
+        self.start_date = start_date
+        self.end_date = end_date
+        self.time_cadence = time_cadence
+        self.wavelength = wavelength
+        self.rsun_factor = rsun_factor
+        self.minval = minval
+        self.images = []
+
+    def fetch_images(self):
+        '''
+        Fetch images from the AIA Synoptic database based on the specified parameters.
+        '''
+        pass
+
+    def analyze_images(self):
+        '''
+        Analyze the fetched images using the AImage class.
+        '''
+        pass
+
+    def generate_statistics(self):
+        '''
+        Generate and return basic statistics for the analyzed images.
+        '''
+        pass
+
+    def visualize_data(self):
+        '''
+        Visualize the time series data.
+        '''
+        pass
+
+    # Additional methods can be added here for more specific analysis or data handling.
