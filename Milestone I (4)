@@ -88,9 +88,8 @@ class AIATimeSeries:
         pass
 
     def analyze_images(self):
-        '''
-        Analyze the fetched images using the AImage class.
-        '''
+        median_value = self.AImage_instance.compute_median()
+        percentile_value = self.AImage_instance.compute_percentile()
         pass
 
     def generate_statistics(self):
