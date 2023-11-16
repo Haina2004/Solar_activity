@@ -82,7 +82,7 @@ class AIATimeSeries:
         self.images = []
 
     def fetch_images(self):
-        image_urls = get_aia_image_urls(self.time_cadence, year=2023, filt='0335'):
+        image_urls = get_aia_image_urls(self.time_cadence, year=2023, filt='0335')
         for url in image_urls:
             aimage = AImage(url, self.rsun_factor, self.minval)
             self.images.append(aimage)
