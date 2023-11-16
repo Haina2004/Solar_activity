@@ -81,19 +81,6 @@ class AIATimeSeries:
         self.minval = minval
         self.images = []
 
-
-    def process_images(self, year=2023, filt='0335', day_cadence=2):
-        base_url = f'http://jsoc.stanford.edu/data/aia/synoptic/{year}/'
-        day_cadence = max(day_cadence, 2)
-
-        for month in range(0, 12, 1):
-            for day in range(0, 30, day_cadence):
-                smonth = 'H' + str(month).zfill(2) + '00/'
-                sday = 'AIA' + date + '_' \
-                    + str(month).zfill(2) + str(day).zfill(2) + '_' + filt + '.fits'
-                url = base_url + smonth + sday
-                yield filt, str(month).zfill(2) + str(day).zfill(2), read_fits_image(url)
-
     def fetch_images(self):
         image_urls = list(get_aia_image_urls(self.time_cadence, year=2023, filt='0335')):
         for url in image_urls:
