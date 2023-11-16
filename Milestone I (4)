@@ -93,14 +93,6 @@ class AIATimeSeries:
                 url = f"{base_url}{formatted_month}/{formatted_day}/H0000/AIA{year}{formatted_month}{formatted_day}_0000_{filt}.fits"
                 yield url
 
-
-
-    def fetch_images(url):
-        '''
-        Fetch images from the AIA Synoptic database based on the specified parameters.
-        '''
-        pass
-
     def analyze_images(self):
         median_value = self.AImage_instance.compute_median()
         percentile_value = self.AImage_instance.compute_percentile()
