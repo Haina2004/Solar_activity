@@ -41,5 +41,6 @@ class AImage:
 # Example Usage
 url = 'http://jsoc.stanford.edu/data/aia/synoptic/2012/07/01/H0000/AIA20120701_0000_4500.fits'
 aimage = AImage(url, rsun_factor=1.5)
+print(f"Mean: {aimage.compute_mean()}")
 print(f"Median: {aimage.compute_median()}")
 print(f"90th Percentile: {aimage.compute_percentile(90)}")
