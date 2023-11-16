@@ -86,12 +86,13 @@ class AIATimeSeries:
         base_url = f'http://jsoc.stanford.edu/data/aia/synoptic/{year}/'
         day_cadence = max(day_cadence, 2)
 
-        for month in range(1, 13): 
-            for day in range(1, 32, day_cadence):
-                formatted_month = str(month).zfill(2)
-                formatted_day = str(day).zfill(2)
-                url = f"{base_url}{formatted_month}/{formatted_day}/H0000/AIA{year}{formatted_month}{formatted_day}_0000_{filt}.fits"
-                yield url
+        for month in range(0, 12, 1):
+            for day in range(0, 30, day_cadence):
+                smonth = 'H' + str(month).zfill(2) + '00/'
+                sday = 'AIA' + date + '_' \
+                    + str(month).zfill(2) + str(day).zfill(2) + '_' + filt + '.fits'
+                url = base_url + smonth + sday
+                yield filt, str(month).zfill(2) + str(day).zfill(2), read_fits_image(url)
 
     def analyze_images(self):
         median_value = self.AImage_instance.compute_median()
