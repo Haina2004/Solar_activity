@@ -1,4 +1,4 @@
-#copy from notebook
+
 import numpy as np
 import astropy
 astropy.__version__
